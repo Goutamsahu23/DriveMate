@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion'
 
-export default function TextReveal({ text, className = '', delay = 0, as: Tag = 'span' }) {
+export default function TextReveal({ text, className = '', delay = 0, as = 'span' }) {
   const words = text.split(' ')
+  const Wrapper = as
 
   return (
-    <Tag className={className}>
+    <Wrapper className={className}>
       {words.map((word, i) => (
         <span key={i} className="inline-block overflow-hidden mr-[0.25em]">
           <motion.span
@@ -21,6 +22,6 @@ export default function TextReveal({ text, className = '', delay = 0, as: Tag = 
           </motion.span>
         </span>
       ))}
-    </Tag>
+    </Wrapper>
   )
 }

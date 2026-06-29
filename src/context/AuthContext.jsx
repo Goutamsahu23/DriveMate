@@ -3,6 +3,19 @@ import api from '../services/api';
 
 const AuthContext = createContext();
 
+function readStoredUser() {
+  try {
+    const token = localStorage.getItem('token');
+    const savedUser = localStorage.getItem('user');
+    if (token && savedUser) return JSON.parse(savedUser);
+  } catch (e) {
+    console.error('Failed to parse user:', e);
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+  }
+  return null;
+}
+
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -12,53 +25,31 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(readStoredUser);
+  const [loading, setLoading] = useState(false);
   const skipVerificationRef = useRef(false);
   const initializedRef = useRef(false);
 
   useEffect(() => {
-    // Prevent running multiple times
     if (initializedRef.current) return;
     initializedRef.current = true;
 
     const token = localStorage.getItem('token');
     const savedUser = localStorage.getItem('user');
-    
-    if (token && savedUser) {
-      try {
-        const parsedUser = JSON.parse(savedUser);
-        setUser(parsedUser);
-        setLoading(false);
-        
-        // Only verify if we didn't just log in
-        if (!skipVerificationRef.current) {
-          // Verify token in background - but don't clear user on failure
-          api.get('/users/me')
-            .then(res => {
-              setUser(res.data);
-              localStorage.setItem('user', JSON.stringify(res.data));
-            })
-            .catch((error) => {
-              // Don't clear user on verification failure
-              // Only log the error for debugging
-              console.warn('Token verification failed:', error.response?.status || error.message);
-              // Keep user logged in - they can still use the app
-            });
-        } else {
-          // Clear the flag after a delay
-          setTimeout(() => {
-            skipVerificationRef.current = false;
-          }, 2000);
-        }
-      } catch (e) {
-        console.error('Failed to parse user:', e);
-        localStorage.removeItem('user');
-        localStorage.removeItem('token');
-        setLoading(false);
-      }
-    } else {
-      setLoading(false);
+
+    if (token && savedUser && !skipVerificationRef.current) {
+      api.get('/users/me')
+        .then(res => {
+          setUser(res.data);
+          localStorage.setItem('user', JSON.stringify(res.data));
+        })
+        .catch((err) => {
+          console.warn('Token verification failed:', err.response?.status || err.message);
+        });
+    } else if (skipVerificationRef.current) {
+      setTimeout(() => {
+        skipVerificationRef.current = false;
+      }, 2000);
     }
   }, []);
 
@@ -169,7 +160,7 @@ export const AuthProvider = ({ children }) => {
     try {
       await api.patch('/users/location', { lat, lng });
       return { success: true };
-    } catch (error) {
+    } catch {
       return { success: false };
     }
   };
@@ -181,7 +172,7 @@ export const AuthProvider = ({ children }) => {
         setUser({ ...user, isAvailable });
       }
       return { success: true };
-    } catch (error) {
+    } catch {
       return { success: false };
     }
   };
