@@ -33,6 +33,45 @@ A full-stack ride booking platform (Uber clone) built with React, Node.js, Expre
 - JWT (authentication)
 - Bcrypt (password hashing)
 
+## Project Structure
+
+```
+DriveMate/
+├── docs/                    # Documentation (API, workflow)
+├── scripts/                 # Utility scripts (e.g. test-auth.js)
+├── src/                     # Frontend (React + Vite)
+│   ├── app/                 # App shell & route definitions
+│   ├── components/
+│   │   ├── common/          # Shared utilities (ErrorBoundary)
+│   │   ├── effects/         # Motion & visual effects
+│   │   ├── layout/          # Nav, headers, page layouts
+│   │   ├── map/             # Map components
+│   │   ├── rides/           # Ride-specific UI
+│   │   ├── routing/         # Route guards (PrivateRoute)
+│   │   └── ui/              # Design system primitives
+│   ├── config/              # Environment & app config
+│   ├── context/             # React context (auth)
+│   ├── data/                # Static page data
+│   ├── hooks/               # Custom React hooks
+│   ├── lib/                 # Constants & motion helpers
+│   ├── pages/
+│   │   ├── auth/            # Login, Register
+│   │   ├── driver/          # Driver dashboard
+│   │   ├── public/          # Landing page
+│   │   ├── rider/           # Rider dashboard, Booking
+│   │   └── shared/          # Ride tracking (both roles)
+│   ├── services/            # API client
+│   └── styles/              # Global CSS
+└── server/                  # Backend (Express + MongoDB)
+    ├── config/              # DB, socket, constants
+    ├── controllers/         # Request handlers
+    ├── middleware/          # Auth middleware
+    ├── models/              # Mongoose schemas
+    ├── routes/              # API routes
+    ├── services/            # Business logic
+    └── utils/               # Helpers (JWT, calculations)
+```
+
 ## Getting Started
 
 ### Prerequisites

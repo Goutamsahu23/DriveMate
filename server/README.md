@@ -119,5 +119,5 @@ npm start
 
 ## API Endpoints
 
-See `API_DOCUMENTATION.md` in the root directory for complete API documentation.
+See `docs/API_DOCUMENTATION.md` for complete API documentation.
 

@@ -1,0 +1,161 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-surface-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-void text-mist font-body overflow-x-hidden;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(124, 92, 255, 0.12), transparent),
+      radial-gradient(ellipse 60% 40% at 100% 0%, rgba(200, 255, 0, 0.06), transparent),
+      radial-gradient(ellipse 50% 30% at 0% 100%, rgba(255, 77, 109, 0.06), transparent);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    @apply bg-volt text-void;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-void;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-surface-border-strong rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-mist-dim;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-surface backdrop-blur-xl border border-surface-border shadow-glass;
+  }
+
+  .glass-strong {
+    @apply bg-void-100/80 backdrop-blur-2xl border border-surface-border-strong shadow-glass-lg;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-volt via-mist to-coral;
+  }
+
+  .text-gradient-volt {
+    @apply bg-clip-text text-transparent bg-gradient-to-br from-volt to-volt-dim;
+  }
+
+  .glow-line {
+    @apply h-px w-full;
+    background: linear-gradient(90deg, transparent, rgba(200, 255, 0, 0.4), transparent);
+  }
+
+  .noise-overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: grain 8s steps(10) infinite;
+  }
+
+  .diagonal-cut {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 4rem), 0 100%);
+  }
+
+  .diagonal-cut-reverse {
+    clip-path: polygon(0 4rem, 100% 0, 100% 100%, 0 100%);
+  }
+
+  .btn-primary {
+    @apply relative inline-flex items-center justify-center gap-2 px-7 py-3.5
+           bg-volt text-void font-display font-bold text-sm tracking-wide
+           rounded-full overflow-hidden
+           transition-all duration-300 ease-smooth
+           hover:shadow-volt hover:scale-[1.02] active:scale-[0.98]
+           disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none;
+  }
+
+  .btn-secondary {
+    @apply relative inline-flex items-center justify-center gap-2 px-7 py-3.5
+           bg-transparent text-mist font-display font-semibold text-sm tracking-wide
+           rounded-full border border-surface-border-strong
+           transition-all duration-300 ease-smooth
+           hover:bg-surface-hover hover:border-volt/30 hover:text-volt
+           active:scale-[0.98]
+           disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2
+           text-mist-muted font-body text-sm
+           rounded-full transition-all duration-200
+           hover:text-mist hover:bg-surface-hover;
+  }
+
+  .btn-danger {
+    @apply relative inline-flex items-center justify-center gap-2 px-7 py-3.5
+           bg-coral/10 text-coral font-display font-semibold text-sm
+           rounded-full border border-coral/30
+           transition-all duration-300 ease-smooth
+           hover:bg-coral/20 hover:shadow-coral active:scale-[0.98]
+           disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+
+  .card {
+    @apply glass rounded-3xl p-6 transition-all duration-500 ease-smooth
+           hover:border-surface-border-strong;
+  }
+
+  .input-field {
+    @apply w-full px-5 py-3.5 bg-void-50 border border-surface-border rounded-2xl
+           text-mist placeholder:text-mist-dim font-body text-sm
+           transition-all duration-300
+           focus:outline-none focus:border-volt/40 focus:ring-2 focus:ring-volt/10
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .label-field {
+    @apply block text-mist-muted text-xs font-mono uppercase tracking-widest mb-2;
+  }
+
+  .section-title {
+    @apply font-display font-bold text-3xl md:text-4xl tracking-tight text-mist;
+  }
+
+  .leaflet-container {
+    @apply bg-void-100 !important;
+    font-family: 'DM Sans', sans-serif !important;
+  }
+
+  .leaflet-tile-pane {
+    filter: saturate(0.3) brightness(0.7) contrast(1.1);
+  }
+}
+
+@layer utilities {
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+}
