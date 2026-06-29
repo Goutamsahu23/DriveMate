@@ -23,5 +23,5 @@ build/
 .DS_Store
 Thumbs.db
 
-# MongoDB
-data/
+# MongoDB local data (root only — do not ignore src/data/)
+/data/
